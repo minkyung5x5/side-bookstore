@@ -6,12 +6,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        red: '#ffed4a',
         purple: '#6200ff',
         pink: '#c200f8'
       },
       fontFamily: {
-        sans: ['var(--noto_sans_kr)'], 
+        sans: ['var(--noto_sans_kr)'],
         // happySans: ['var(--single_day)'], 
       },
       fontSize: {
@@ -19,5 +18,9 @@ module.exports = {
     },
   },
   plugins: [],
+  
+  corePlugins: {
+    preflight: false
+  }
 }
 
