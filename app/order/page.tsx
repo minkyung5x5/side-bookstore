@@ -17,11 +17,19 @@ import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs'
 import generatePicker from 'antd/es/date-picker/generatePicker'
 import locale from 'antd/es/date-picker/locale/ko_KR'
 import Search from 'antd/es/input/Search';
+import { writeToNotion } from '@/apiClient/actions/writeToNotion';
 
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
 const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig)
 
+interface ReservationFormData {
+    name: string;
+    phone: string;
+    date: dayjs.Dayjs | string;
+    time: string;
+    etc?: string;
+}
 
 export default function Order() {
     const [form] = Form.useForm();
@@ -36,13 +44,27 @@ export default function Order() {
     };
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
-    const onFinish = (values: any) => {
-        const formatedValues = {
-            ...values,
-            date: values.date.format('YYYY-MM-DD'),
-        };
 
-        console.log(formatedValues);
+    const handleWriteToNotion = async (title: string, content: string) => {
+        try {
+          const data = await writeToNotion(title, content);
+          console.log('Data written to Notion:', data);
+        } catch (error) {
+          console.error('Error writing to Notion:', error);
+        }
+      };
+      
+    const formatValues = (values: ReservationFormData) => {
+        return {
+            ...values,
+            date: typeof values.date === 'string' ? values.date : values.date.format('YYYY-MM-DD'),
+        };
+    };
+
+    const onFinish = (values: ReservationFormData) => {
+        const formattedValues = formatValues(values);
+        console.log(formattedValues);
+        handleWriteToNotion(formattedValues.name, formattedValues.phone)
     };
 
     return (
@@ -64,11 +86,14 @@ export default function Order() {
                     </Form.Item>
 
                     <Form.Item name="date" label="날짜" rules={[{ required: true, message: '날짜를 선택해주세요!' }]}>
-                        <DatePicker className='w-full' locale={locale} disabledDate={disabledDate} />
+                        <DatePicker
+                            className='w-full' locale={locale}
+                            disabledDate={disabledDate} showToday={false}
+                            placeholder='원하는 날짜를 선택해주세요' />
                     </Form.Item>
                     <Form.Item name="time" label="시간" rules={[{ required: true, message: '시간을 선택해주세요!' }]}>
                         <Select
-                            placeholder="시간을 선택해주세요"
+                            placeholder="원하는 시간을 선택해주세요"
                             allowClear
                         >
                             <Option value="14:00">오후 2:00</Option>
@@ -90,7 +115,7 @@ export default function Order() {
                     </Form.Item>
 
                     <Form.Item className='my-0 flex justify-end'>
-                        <Button type="primary" htmlType="submit">{'예약하기'}</Button>
+                        <Button type="primary" htmlType="submit" size="large" shape="round">{'예약하기'}</Button>
                     </Form.Item>
                 </Form>
             </Card>
