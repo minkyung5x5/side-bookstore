@@ -25,7 +25,7 @@ const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig)
 
 
 
-export default function Order() {
+export default function BookOrder() {
     const [form] = Form.useForm();
     const { Option } = Select;
     const { TextArea } = Input;
@@ -36,8 +36,6 @@ export default function Order() {
         const isWeekend = current.day() === 0 || current.day() === 6;
         return current && ((current < twoDaysLater) || isWeekend);
     };
-    const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
-
 
     const handleWriteToNotion = async (values: Reservation) => {
         try {
@@ -63,9 +61,6 @@ export default function Order() {
 
     return (
         <main className="">
-            <Card className="max-w-96 m-4 mx-auto" title="책 검색하기">
-                <Search placeholder="책 제목을 입력해주세요" onSearch={onSearch} enterButton />
-            </Card>
             <Card className="max-w-96 m-4 mx-auto" title="주문하기">
                 <Form
                     onFinish={onFinish}
