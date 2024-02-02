@@ -10,7 +10,7 @@ import {
 } from 'antd';
 import type { GetProps } from 'antd';
 import type { SearchProps } from 'antd/es/input/Search';
-
+import type { Reservation } from '@/type/reservation';
 import 'dayjs/locale/ko'
 import dayjs, { Dayjs } from 'dayjs'
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs'
@@ -23,13 +23,7 @@ type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
 const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig)
 
-interface ReservationFormData {
-    name: string;
-    phone: string;
-    date: dayjs.Dayjs | string;
-    time: string;
-    etc?: string;
-}
+
 
 export default function Order() {
     const [form] = Form.useForm();
@@ -45,26 +39,26 @@ export default function Order() {
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
 
-    const handleWriteToNotion = async (title: string, content: string) => {
+    const handleWriteToNotion = async (values: Reservation) => {
         try {
-          const data = await writeToNotion(title, content);
+          const data = await writeToNotion(values);
           console.log('Data written to Notion:', data);
         } catch (error) {
           console.error('Error writing to Notion:', error);
         }
       };
       
-    const formatValues = (values: ReservationFormData) => {
+    const formatValues = (values: Reservation) => {
         return {
             ...values,
             date: typeof values.date === 'string' ? values.date : values.date.format('YYYY-MM-DD'),
         };
     };
 
-    const onFinish = (values: ReservationFormData) => {
+    const onFinish = (values: Reservation) => {
         const formattedValues = formatValues(values);
         console.log(formattedValues);
-        handleWriteToNotion(formattedValues.name, formattedValues.phone)
+        handleWriteToNotion(formattedValues)
     };
 
     return (
