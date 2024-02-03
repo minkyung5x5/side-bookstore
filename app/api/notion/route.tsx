@@ -1,7 +1,5 @@
 'use server'
 
-import { NextApiRequest, NextApiResponse } from 'next';
-
 const NOTION_API_URL = 'https://api.notion.com/v1';
 const NOTION_SECRET_TOKEN = process.env.NOTION_SECRET_TOKEN;
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID;

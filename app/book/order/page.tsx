@@ -7,6 +7,7 @@ import {
     Form,
     Input,
     Select,
+    Skeleton,
 } from 'antd';
 import type { GetProps } from 'antd';
 import type { SearchProps } from 'antd/es/input/Search';
@@ -17,7 +18,9 @@ import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs'
 import generatePicker from 'antd/es/date-picker/generatePicker'
 import locale from 'antd/es/date-picker/locale/ko_KR'
 import Search from 'antd/es/input/Search';
-import { writeToNotion } from '@/apiClient/actions/writeToNotion';
+import { postToNotion } from '@/apiClient/actions/notion';
+import { Suspense } from 'react';
+import Loading from '@/app/loading';
 
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
@@ -37,15 +40,15 @@ export default function BookOrder() {
         return current && ((current < twoDaysLater) || isWeekend);
     };
 
-    const handleWriteToNotion = async (values: Reservation) => {
+    const handlePostToNotion = async (values: Reservation) => {
         try {
-          const data = await writeToNotion(values);
-          console.log('Data written to Notion:', data);
+            const data = await postToNotion(values);
+            console.log('Data written to Notion:', data);
         } catch (error) {
-          console.error('Error writing to Notion:', error);
+            console.error('Error writing to Notion:', error);
         }
-      };
-      
+    };
+
     const formatValues = (values: Reservation) => {
         return {
             ...values,
@@ -56,7 +59,7 @@ export default function BookOrder() {
     const onFinish = (values: Reservation) => {
         const formattedValues = formatValues(values);
         console.log(formattedValues);
-        handleWriteToNotion(formattedValues)
+        handlePostToNotion(formattedValues)
     };
 
     return (
