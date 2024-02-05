@@ -4,7 +4,7 @@ const sumClass = (...classnames: string[]) => {
   return classnames.join(" ");
 };
 
-const noto_sans_kr = Noto_Serif_KR({
+const noto_serif_kr = Noto_Serif_KR({
   subsets: ["latin"],
   weight: ["200", "400", "700", "900"], 
   variable: "--noto_sans_kr",
@@ -17,4 +17,4 @@ const noto_sans_kr = Noto_Serif_KR({
 //   display: "swap",
 // });
 
-export const FontClassNames = sumClass(noto_sans_kr.className);//, single_day.variable);
+export const FontClassNames = sumClass(noto_serif_kr.className);//, single_day.variable);

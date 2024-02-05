@@ -13,7 +13,7 @@ const config: Config = {
         pink: '#c200f8'
       },
       fontFamily: {
-        sans: ['var(--noto_sans_kr)'],
+        sans: ['var(--noto_serif_kr)'],
         // happySans: ['var(--single_day)'], 
       },
       fontSize: {

@@ -4,7 +4,8 @@ const theme: ThemeConfig = {
     token: {
         fontSize: 16,
         colorPrimary: '#531dab',
-        fontFamily: 'Noto_Serif_KR',// sans-serif'
+        // fontFamily: 'var(--noto_serif_kr)',
+
     },
 };
 

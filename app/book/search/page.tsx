@@ -9,20 +9,28 @@ import { useEffect, useState } from "react";
 import Image from 'next/image'
 
 export default function BookSearch() {
-    const [selectedBookList, setSelectedBookList] = useState([]);
-    const [options, setOptions] = useState<SelectProps<object>['options']>([]);
+    const [selectedBookList, setSelectedBookList] = useState<Book[]>([]);
+    const [searchedBookList, setSearchedBookList] = useState<Book[]>([]);
+    const [options, setOptions] = useState<{ value: number; label: React.ReactNode }[]>([]);
 
     useEffect(() => {
-        console.log("Updated option");
-        console.log(options)
-    }, [options]);
+        console.log("Updated searchedBookList");
+        console.log(searchedBookList)
+        const newOptions = formatOptions(searchedBookList)
+        setOptions(newOptions);
+
+    }, [searchedBookList]);
+
+    useEffect(() => {
+        console.log("Updated selectedBookList");
+        console.log(selectedBookList)
+
+    }, [selectedBookList]);
 
     const callApi = async (query: string) => {
         try {
             const data = await getFromAladin({ query });
-            const bookList = data.item;
-            console.log(bookList)
-            setOptions(searchResult(bookList));
+            setSearchedBookList(data.item);
             console.log('Data from aladin:', data);
         } catch (error) {
             console.error('Error aladin', error);
@@ -41,26 +49,52 @@ export default function BookSearch() {
     };
 
 
-    const onSelect = (value: string) => {
-        console.log('onSelect', value);
+    const onSelect = (idx: number) => {
+        console.log('onSelect', searchedBookList[idx]);
+        const newSelectedBook = searchedBookList[idx]
+        setSelectedBookList(selectedBookList => [...selectedBookList, newSelectedBook])
     };
 
-    const searchResult = (bookList: any[]) => (bookList || []).map((book) => ({
-        value: book.itemId,
-        label: (
-            <Flex key={book.itemId} gap='small'>
+    const Book: React.FC<Book> = ({ cover, title, author, publisher, priceStandard }) => (
+        <div className="flex items-center gap-2">
+            <div className="w-1/5">
                 <Image
-                    src={book.cover}
+                    src={cover}
                     alt="Cover of book"
                     width={60}
                     height={90}
                 />
-                <Flex vertical gap='2'>
-                    <div>{book.title}</div>
-                    <div>{book.author}</div>
-                    <div>{book.publisher}</div>
-                </Flex>
-            </Flex>
+            </div>
+            <div className="flex flex-col gap-0.5">
+                <div className="truncate font-semibold border-4 border-purple">{title}</div>
+                <div className="text-sm text-gray-400">{author}</div>
+                <div className="text-xs text-gray-400">{publisher}</div>
+                <div className="font-semibold text-purple">{priceStandard}{'원'}</div>
+            </div>
+        </div>
+    );
+
+    const formatOptions = (bookList: any[]) => (bookList || []).map((book, idx) => ({
+        value: idx,
+        label: (
+            <div key={book.itemId} className="">
+                <div className="flex items-center gap-2">
+                    <div className="w-1/5">
+                        <Image
+                            src={book.cover}
+                            alt="Cover of book"
+                            width={60}
+                            height={90}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                        <div className="truncate font-semibold border-4 border-purple">{book.title}</div>
+                        <div className="text-sm text-gray-400">{book.author}</div>
+                        <div className="text-xs text-gray-400">{book.publisher}</div>
+                        <div className="font-semibold text-purple">{book.priceStandard}{'원'}</div>
+                    </div>
+                </div>
+            </div>
         ),
     }));
 
@@ -68,12 +102,13 @@ export default function BookSearch() {
     return (
         <main className="">
             <Card className="max-w-96 m-4 mx-auto" title="책 검색하기">
+
                 <AutoComplete
-                    popupMatchSelectWidth={300}
-                    style={{ width: 300 }}
+                    className="w-full"
                     options={options}
                     onSelect={onSelect}
                     size="large"
+                    autoFocus={true}
                 >
                     <Search
                         placeholder="책 제목을 입력해주세요"
@@ -84,6 +119,13 @@ export default function BookSearch() {
                 </AutoComplete>
 
             </Card>
+
+            <Card className="max-w-96 m-4 mx-auto" title="책 바구니">
+                {selectedBookList.map((book, idx) => (
+                    <Book key={idx} {...book} />
+                ))}
+            </Card>
+
         </main>
     );
 }
