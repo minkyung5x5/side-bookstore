@@ -20,7 +20,6 @@ import locale from 'antd/es/date-picker/locale/ko_KR'
 import Search from 'antd/es/input/Search';
 import { postToNotion } from '@/apiClient/actions/notion';
 import { Suspense } from 'react';
-import Loading from '@/app/loading';
 
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
