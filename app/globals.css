@@ -6,7 +6,7 @@ body {
   margin: 0;
   color: #000000;
   background: linear-gradient(to right, #6200ff, #c200f8);
-}
+  }
 
 @layer utilities {
   .text-balance {

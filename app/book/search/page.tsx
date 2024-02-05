@@ -1,13 +1,15 @@
 "use client"
 
 import { getFromAladin } from "@/apiClient/actions/aladin";
-import { AutoComplete, Card, Select, SelectProps } from "antd";
+import { AutoComplete, Card, Flex, Select, SelectProps } from "antd";
 import { SearchProps } from "antd/es/input";
 import Search from "antd/es/input/Search";
 import debounce from 'lodash/debounce';
 import { useEffect, useState } from "react";
+import Image from 'next/image'
 
 export default function BookSearch() {
+    const [selectedBookList, setSelectedBookList] = useState([]);
     const [options, setOptions] = useState<SelectProps<object>['options']>([]);
 
     useEffect(() => {
@@ -19,6 +21,7 @@ export default function BookSearch() {
         try {
             const data = await getFromAladin({ query });
             const bookList = data.item;
+            console.log(bookList)
             setOptions(searchResult(bookList));
             console.log('Data from aladin:', data);
         } catch (error) {
@@ -42,12 +45,22 @@ export default function BookSearch() {
         console.log('onSelect', value);
     };
 
-    const searchResult = (bookList: any[]) => (bookList || []).map((book, idx) => ({
-        value: idx,
+    const searchResult = (bookList: any[]) => (bookList || []).map((book) => ({
+        value: book.itemId,
         label: (
-            <div key={idx}>
-                {book.title} - {book.author}
-            </div>
+            <Flex key={book.itemId} gap='small'>
+                <Image
+                    src={book.cover}
+                    alt="Cover of book"
+                    width={60}
+                    height={90}
+                />
+                <Flex vertical gap='2'>
+                    <div>{book.title}</div>
+                    <div>{book.author}</div>
+                    <div>{book.publisher}</div>
+                </Flex>
+            </Flex>
         ),
     }));
 

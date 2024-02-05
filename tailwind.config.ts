@@ -8,13 +8,22 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        purple: '#6200ff',
+        pink: '#c200f8'
+      },
+      fontFamily: {
+        sans: ['var(--noto_sans_kr)'],
+        // happySans: ['var(--single_day)'], 
+      },
+      fontSize: {
       },
     },
   },
   plugins: [],
+  
+  corePlugins: {
+    preflight: false
+  }
 };
 export default config;
