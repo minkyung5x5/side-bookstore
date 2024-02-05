@@ -76,26 +76,7 @@ export default function BookSearch() {
 
     const formatOptions = (bookList: any[]) => (bookList || []).map((book, idx) => ({
         value: idx,
-        label: (
-            <div key={book.itemId} className="">
-                <div className="flex items-center gap-2">
-                    <div className="w-1/5">
-                        <Image
-                            src={book.cover}
-                            alt="Cover of book"
-                            width={60}
-                            height={90}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                        <div className="truncate font-semibold border-4 border-purple">{book.title}</div>
-                        <div className="text-sm text-gray-400">{book.author}</div>
-                        <div className="text-xs text-gray-400">{book.publisher}</div>
-                        <div className="font-semibold text-purple">{book.priceStandard}{'원'}</div>
-                    </div>
-                </div>
-            </div>
-        ),
+        label: (<Book key={idx} {...book} />),
     }));
 
 
