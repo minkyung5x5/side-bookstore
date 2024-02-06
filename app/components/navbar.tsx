@@ -1,4 +1,3 @@
-
 export default async function Navbar() {
   return (
     <div className="h-12 md:h-16 bg-white flex justify-center items-center bg-gradient-to-r from-pink-500 to-purple-500">

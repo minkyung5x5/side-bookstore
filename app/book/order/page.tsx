@@ -19,7 +19,8 @@ import generatePicker from 'antd/es/date-picker/generatePicker'
 import locale from 'antd/es/date-picker/locale/ko_KR'
 import Search from 'antd/es/input/Search';
 import { postToNotion } from '@/apiClient/actions/notion';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import Book from '@/app/components/book';
 
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
@@ -31,6 +32,16 @@ export default function BookOrder() {
     const [form] = Form.useForm();
     const { Option } = Select;
     const { TextArea } = Input;
+    const [selectedBookList, setSelectedBookList] = useState<Book[]>([]);
+
+    useEffect(() => {
+        // localStorage에서 선택한 책 목록을 가져와 상태로 설정
+        const storedSelectedBookList = localStorage.getItem('selectedBookList');
+        if (storedSelectedBookList) {
+            setSelectedBookList(JSON.parse(storedSelectedBookList));
+        }
+        console.log(storedSelectedBookList)
+    }, []);
 
     const disabledDate: RangePickerProps['disabledDate'] = (current) => {
         const today = dayjs().endOf('day');
@@ -64,6 +75,9 @@ export default function BookOrder() {
     return (
         <main className="">
             <Card className="max-w-96 m-4 mx-auto" title="주문하기">
+                {/* {selectedBookList.map((book, idx) => (
+                    <Book key={idx} {...book}/>
+                ))} */}
                 <Form
                     onFinish={onFinish}
                     layout="vertical"
