@@ -21,6 +21,7 @@ import Search from 'antd/es/input/Search';
 import { postToNotion } from '@/apiClient/actions/notion';
 import { Suspense, useEffect, useState } from 'react';
 import Book from '@/app/components/book';
+import { useRouter } from 'next/navigation';
 
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
@@ -29,6 +30,7 @@ const DatePicker = generatePicker<Dayjs>(dayjsGenerateConfig)
 
 
 export default function BookOrder() {
+    const router = useRouter();
     const [form] = Form.useForm();
     const { Option } = Select;
     const { TextArea } = Input;
@@ -66,10 +68,14 @@ export default function BookOrder() {
         };
     };
 
-    const onFinish = (values: Reservation) => {
-        const formattedValues = formatValues(values);
-        console.log(formattedValues);
-        handlePostToNotion(formattedValues)
+    const onFinish = async (values: Reservation) => {
+        try {
+            const formattedValues = formatValues(values);
+            await handlePostToNotion(formattedValues);
+            router.push('/book/submit');
+        } catch (error) {
+            console.error('Error writing to Notion:', error);
+        }
     };
 
     const calculateTotalPrice = (bookList: Book[]) => {
