@@ -72,12 +72,26 @@ export default function BookOrder() {
         handlePostToNotion(formattedValues)
     };
 
+    const calculateTotalPrice = (bookList: Book[]) => {
+        return bookList.reduce((acc, book) => {
+            return acc + parseInt(book.priceStandard, 10);
+        }, 0);
+    };
+
     return (
         <main className="">
+            {/* form에 selectedBookList 담기
+            <Card className="max-w-96 m-4 mx-auto" title="책 바구니"
+                actions={selectedBookList.length === 0 ? []
+                    : [
+                        <div className="font-semibold text-purple">{'총 ' + calculateTotalPrice(selectedBookList)  + '원'}</div>
+                    ]}
+            >
+                {selectedBookList.map((book, idx) => (
+                    <Book key={idx} {...book} cartOption={"none"} />
+                ))}
+            </Card> */}
             <Card className="max-w-96 m-4 mx-auto" title="주문하기">
-                {/* {selectedBookList.map((book, idx) => (
-                    <Book key={idx} {...book}/>
-                ))} */}
                 <Form
                     onFinish={onFinish}
                     layout="vertical"

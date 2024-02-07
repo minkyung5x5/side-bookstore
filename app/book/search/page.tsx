@@ -65,7 +65,7 @@ export default function BookSearch() {
 
     const formatOptions = (bookList: any[]) => (bookList || []).map((book, idx) => ({
         value: idx,
-        label: (<Book key={idx} {...book} addToCart={true} />),
+        label: (<Book key={idx} {...book} cartOption={"plus"} />),
     }));
 
     const calculateTotalPrice = (bookList: Book[]) => {
@@ -103,7 +103,7 @@ export default function BookSearch() {
                     ]}
             >
                 {selectedBookList.map((book, idx) => (
-                    <Book key={idx} {...book} addToCart={false} onDelete={onDelete} />
+                    <Book key={idx} {...book} cartOption={"minus"} onDelete={onDelete} />
                 ))}
             </Card>
         </main>
