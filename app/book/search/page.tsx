@@ -75,8 +75,8 @@ export default function BookSearch() {
     };
 
     return (
-        <main className="">
-            <Card className="max-w-96 m-4 mx-auto" title="책 검색하기">
+        <main className="m-4">
+            <Card className="max-w-96 mx-auto" title="책 검색하기">
                 <AutoComplete
                     className="w-full"
                     options={options}
@@ -93,15 +93,18 @@ export default function BookSearch() {
                 </AutoComplete>
             </Card>
 
-            <Card className="max-w-96 m-4 mx-auto" title="책 바구니"
+            <Card className="max-w-96 mt-4 mx-auto" title="책 바구니"
                 actions={selectedBookList.length === 0 ? []
                     : [
-                        <div className="font-semibold text-purple">{'총 ' + totalPrice + '원'}</div>,
+                        <div className="h-10 flex justify-center items-center font-semibold text-purple">{'총 ' + totalPrice + '원'}</div>,
                         <Link href="/book/order">
-                            <Button size="large" type="primary">주문하기</Button>
+                            <Button type="primary" size="large" shape="round">주문하기</Button>
                         </Link>
                     ]}
             >
+                {selectedBookList.length === 0 &&
+                    <div className="text-center text-gray-400">{'📚 책을 검색해서 선택해주세요 📚'}</div>
+                }
                 {selectedBookList.map((book, idx) => (
                     <Book key={idx} {...book} cartOption={"minus"} onDelete={onDelete} />
                 ))}

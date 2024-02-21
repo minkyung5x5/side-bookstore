@@ -12,7 +12,7 @@ const Book: React.FC<Book & { cartOption: string, onDelete?: (itemId: string) =>
                     height={90}
                 />
             </div>
-            <div className="w-2/3 flex flex-wrap flex-col gap-0.5">
+            <div className="pl-2 w-2/3 flex flex-wrap flex-col gap-0.5">
                 <div className="w-full truncate font-semibold">{title}</div>
                 <div className="w-full truncate text-sm text-gray-400">{author}</div>
                 <div className="w-full truncate text-xs text-gray-400">{publisher}</div>
@@ -20,9 +20,9 @@ const Book: React.FC<Book & { cartOption: string, onDelete?: (itemId: string) =>
             </div>
             <div className="w-1/10">
                 {cartOption === "plus" ? (
-                    <PlusCircleOutlined twoToneColor={'#6200ff'} />
+                    <PlusCircleOutlined style={{ color: '#6200ff' }} />
                 ) : cartOption === "minus" && onDelete ? (
-                    <MinusCircleOutlined onClick={() => onDelete(itemId)} twoToneColor={'#6200ff'} />
+                    <MinusCircleOutlined onClick={() => onDelete(itemId)} style={{ color: '#6200ff' }} />
                 ) : null}
             </div>
         </div>

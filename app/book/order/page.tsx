@@ -85,7 +85,7 @@ export default function BookOrder() {
     };
 
     return (
-        <main className="">
+        <main className="m-4">
             {/* form에 selectedBookList 담기
             <Card className="max-w-96 m-4 mx-auto" title="책 바구니"
                 actions={selectedBookList.length === 0 ? []
@@ -97,7 +97,7 @@ export default function BookOrder() {
                     <Book key={idx} {...book} cartOption={"none"} />
                 ))}
             </Card> */}
-            <Card className="max-w-96 m-4 mx-auto" title="주문하기">
+            <Card className="max-w-96 mx-auto" title="주문하기">
                 <Form
                     onFinish={onFinish}
                     layout="vertical"
