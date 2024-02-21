@@ -22,6 +22,7 @@ import { postToNotion } from '@/apiClient/actions/notion';
 import { Suspense, useEffect, useState } from 'react';
 import Book from '@/app/components/book';
 import { useRouter } from 'next/navigation';
+import calculateTotalPrice from '@/app/utils/calculateTotalPrice';
 
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
@@ -37,7 +38,6 @@ export default function BookOrder() {
     const [selectedBookList, setSelectedBookList] = useState<Book[]>([]);
 
     useEffect(() => {
-        // localStorage에서 선택한 책 목록을 가져와 상태로 설정
         const storedSelectedBookList = localStorage.getItem('selectedBookList');
         if (storedSelectedBookList) {
             setSelectedBookList(JSON.parse(storedSelectedBookList));
@@ -56,6 +56,7 @@ export default function BookOrder() {
         try {
             const data = await postToNotion(values);
             console.log('Data written to Notion:', data);
+            localStorage.setItem('reservation', JSON.stringify(values));
         } catch (error) {
             console.error('Error writing to Notion:', error);
         }
@@ -65,12 +66,14 @@ export default function BookOrder() {
         return {
             ...values,
             date: typeof values.date === 'string' ? values.date : values.date.format('YYYY-MM-DD'),
+            bookList: selectedBookList,
         };
     };
 
     const onFinish = async (values: Reservation) => {
         try {
             const formattedValues = formatValues(values);
+            console.log(formattedValues)
             await handlePostToNotion(formattedValues);
             router.push('/book/submit');
         } catch (error) {
@@ -78,25 +81,19 @@ export default function BookOrder() {
         }
     };
 
-    const calculateTotalPrice = (bookList: Book[]) => {
-        return bookList.reduce((acc, book) => {
-            return acc + parseInt(book.priceStandard, 10);
-        }, 0);
-    };
-
     return (
         <main className="m-4">
-            {/* form에 selectedBookList 담기
-            <Card className="max-w-96 m-4 mx-auto" title="책 바구니"
+            {/* form에 selectedBookList 담기 */}
+            <Card className="max-w-96 m-4 mx-auto" title="주문할 책"
                 actions={selectedBookList.length === 0 ? []
                     : [
-                        <div className="font-semibold text-purple">{'총 ' + calculateTotalPrice(selectedBookList)  + '원'}</div>
+                        <div className="font-semibold text-purple">{'총 ' + calculateTotalPrice(selectedBookList) + '원'}</div>
                     ]}
             >
                 {selectedBookList.map((book, idx) => (
                     <Book key={idx} {...book} cartOption={"none"} />
                 ))}
-            </Card> */}
+            </Card>
             <Card className="max-w-96 mx-auto" title="주문하기">
                 <Form
                     onFinish={onFinish}

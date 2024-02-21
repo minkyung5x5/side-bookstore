@@ -2,6 +2,7 @@
 
 import { getFromAladin } from "@/apiClient/actions/aladin";
 import Book from "@/app/components/book";
+import calculateTotalPrice from "@/app/utils/calculateTotalPrice";
 import { AutoComplete, Button, Card, Flex, Select, SelectProps } from "antd";
 import { SearchProps } from "antd/es/input";
 import Search from "antd/es/input/Search";
@@ -68,11 +69,6 @@ export default function BookSearch() {
         label: (<Book key={idx} {...book} cartOption={"plus"} />),
     }));
 
-    const calculateTotalPrice = (bookList: Book[]) => {
-        return bookList.reduce((acc, book) => {
-            return acc + parseInt(book.priceStandard, 10);
-        }, 0);
-    };
 
     return (
         <main className="m-4">

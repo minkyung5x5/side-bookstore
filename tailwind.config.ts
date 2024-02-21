@@ -10,7 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         purple: '#6200ff',
-        pink: '#c200f8'
+        pink: '#c200f8',
+        kakao: '#FEE500',
+        naver: '#1EC800'
       },
       fontFamily: {
         sans: ['var(--noto_serif_kr)'],
