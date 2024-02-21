@@ -1,8 +1,8 @@
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import Image from 'next/image'
 
-const Book: React.FC<Book & { cartOption: string, onDelete?: (itemId: string) => void }>
-    = ({ itemId, cover, title, author, publisher, priceStandard, cartOption, onDelete }) => (
+const Book: React.FC<Book & { idx: number, cartOption: string, onDelete?: (itemId: number) => void }>
+    = ({ idx, itemId, cover, title, author, publisher, priceStandard, cartOption, onDelete }) => (
         <div className="my-1 border-1 border-purple w-full flex items-center justify-between">
             <div className="w-1/5">
                 <Image
@@ -22,7 +22,7 @@ const Book: React.FC<Book & { cartOption: string, onDelete?: (itemId: string) =>
                 {cartOption === "plus" ? (
                     <PlusCircleOutlined style={{ color: '#6200ff' }} />
                 ) : cartOption === "minus" && onDelete ? (
-                    <MinusCircleOutlined onClick={() => onDelete(itemId)} style={{ color: '#6200ff' }} />
+                    <MinusCircleOutlined onClick={() => onDelete(idx)} style={{ color: '#6200ff' }} />
                 ) : null}
             </div>
         </div>

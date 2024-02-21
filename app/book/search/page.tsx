@@ -15,6 +15,7 @@ export default function BookSearch() {
     const [searchedBookList, setSearchedBookList] = useState<Book[]>([]);
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [options, setOptions] = useState<{ value: number; label: React.ReactNode }[]>([]);
+    const [autoCompleteValue, setAutoCompleteValue] = useState('');
 
     useEffect(() => {
         console.log("Updated searchedBookList");
@@ -53,15 +54,16 @@ export default function BookSearch() {
         callApi(value);
     };
 
-
     const onSelect = (idx: number) => {
         console.log('onSelect', searchedBookList[idx]);
         const newSelectedBook = searchedBookList[idx]
         setSelectedBookList(selectedBookList => [...selectedBookList, newSelectedBook])
     };
 
-    const onDelete = (bookId: string) => {
-        setSelectedBookList(selectedBookList => selectedBookList.filter(book => book.itemId !== bookId));
+    const onDelete = (bookIdx: number) => {
+        setSelectedBookList(selectedBookList =>
+            selectedBookList.filter((_, idx) => idx !== bookIdx)
+        );
     };
 
     const formatOptions = (bookList: any[]) => (bookList || []).map((book, idx) => ({
@@ -77,6 +79,7 @@ export default function BookSearch() {
                     className="w-full"
                     options={options}
                     onSelect={onSelect}
+                    // value={autoCompleteValue}
                     size="large"
                     autoFocus={true}
                 >
@@ -102,7 +105,7 @@ export default function BookSearch() {
                     <div className="text-center text-gray-400">{'📚 책을 검색해서 선택해주세요 📚'}</div>
                 }
                 {selectedBookList.map((book, idx) => (
-                    <Book key={idx} {...book} cartOption={"minus"} onDelete={onDelete} />
+                    <Book key={idx} idx={idx} {...book} cartOption={"minus"} onDelete={onDelete} />
                 ))}
             </Card>
         </main>
