@@ -105,7 +105,7 @@ export default function BookSearch() {
                     <div className="text-center text-gray-400">{'📚 책을 검색해서 선택해주세요 📚'}</div>
                 }
                 {selectedBookList.map((book, idx) => (
-                    <Book key={idx} idx={idx} {...book} cartOption={"minus"} onDelete={onDelete} />
+                    <Book key={book.itemId} idx={idx} {...book} cartOption={"minus"} onDelete={onDelete} />
                 ))}
             </Card>
         </main>
