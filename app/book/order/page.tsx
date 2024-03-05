@@ -91,7 +91,7 @@ export default function BookOrder() {
                     ]}
             >
                 {selectedBookList.map((book, idx) => (
-                    <Book key={idx} {...book} cartOption={"none"} />
+                    <Book key={idx} idx={idx} {...book} cartOption={"none"} />
                 ))}
             </Card>
             <Card className="max-w-96 mx-auto" title="주문하기">
