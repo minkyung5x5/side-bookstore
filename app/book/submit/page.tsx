@@ -52,7 +52,7 @@ export default function BookSubmit() {
                             <div className="font-bold">{'주문한 책'}</div>
                             <div className="col-span-3">
                                 {reservation.bookList.map((book, idx) => (
-                                    <Book key={idx} {...book} cartOption={"none"} />
+                                    <Book key={book.itemId} idx={idx} {...book} cartOption={"none"} />
                                 ))}
                             </div>
                         </div>
