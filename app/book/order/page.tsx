@@ -1,5 +1,5 @@
 "use client"
-
+import React from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import {
     Card,
@@ -91,7 +91,9 @@ export default function BookOrder() {
                     ]}
             >
                 {selectedBookList.map((book, idx) => (
-                    <Book key={book.itemId} idx={idx} {...book} cartOption={"none"} />
+                    <React.Fragment key={book.itemId}>
+                        <Book key={book.itemId} idx={idx} {...book} cartOption={"none"} />
+                    </React.Fragment>
                 ))}
             </Card>
             <Card className="max-w-96 mx-auto" title="주문하기">
