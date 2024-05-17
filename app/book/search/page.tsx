@@ -95,8 +95,8 @@ export default function BookSearch() {
             <Card className="max-w-96 mt-4 mx-auto" title="책 바구니"
                 actions={selectedBookList.length === 0 ? []
                     : [
-                        <div className="h-10 flex justify-center items-center font-semibold text-purple">{'총 ' + totalPrice + '원'}</div>,
-                        <Link href="/book/order">
+                        <div key="total" className="h-10 flex justify-center items-center font-semibold text-purple">{'총 ' + totalPrice + '원'}</div>,
+                        <Link key="order" href="/book/order">
                             <Button type="primary" size="large" shape="round">주문하기</Button>
                         </Link>
                     ]}

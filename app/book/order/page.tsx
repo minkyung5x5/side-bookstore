@@ -87,13 +87,11 @@ export default function BookOrder() {
             <Card className="max-w-96 m-4 mx-auto" title="주문할 책"
                 actions={selectedBookList.length === 0 ? []
                     : [
-                        <div className="font-semibold text-purple">{'총 ' + calculateTotalPrice(selectedBookList) + '원'}</div>
+                        <div key="total" className="font-semibold text-purple">{'총 ' + calculateTotalPrice(selectedBookList) + '원'}</div>
                     ]}
             >
                 {selectedBookList.map((book, idx) => (
-                    <React.Fragment key={book.itemId}>
-                        <Book key={book.itemId} idx={idx} {...book} cartOption={"none"} />
-                    </React.Fragment>
+                    <Book key={book.itemId} idx={idx} {...book} cartOption={"none"} />
                 ))}
             </Card>
             <Card className="max-w-96 mx-auto" title="주문하기">
