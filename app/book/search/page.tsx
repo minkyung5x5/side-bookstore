@@ -14,7 +14,7 @@ export default function BookSearch() {
     const [selectedBookList, setSelectedBookList] = useState<Book[]>([]);
     const [searchedBookList, setSearchedBookList] = useState<Book[]>([]);
     const [totalPrice, setTotalPrice] = useState<number>(0);
-    const [options, setOptions] = useState<{ value: number; label: React.ReactNode }[]>([]);
+    const [options, setOptions] = useState<{ key: number; value: string; label: React.ReactNode }[]>([]);
     const [autoCompleteValue, setAutoCompleteValue] = useState('');
 
     useEffect(() => {
@@ -54,9 +54,10 @@ export default function BookSearch() {
         callApi(value);
     };
 
-    const onSelect = (idx: number) => {
-        console.log('onSelect', searchedBookList[idx]);
-        const newSelectedBook = searchedBookList[idx]
+    const onSelect = (val: number, option: {key: number, value: string, label: React.ReactNode}) => {
+        console.log(typeof option.label)
+        console.log('onSelect', searchedBookList[option.key]);
+        const newSelectedBook = searchedBookList[option.key]
         setSelectedBookList(selectedBookList => [...selectedBookList, newSelectedBook])
     };
 
@@ -67,7 +68,8 @@ export default function BookSearch() {
     };
 
     const formatOptions = (bookList: any[]) => (bookList || []).map((book, idx) => ({
-        value: idx,
+        key: idx,
+        value: book.title,
         label: (<Book key={idx} {...book} cartOption={"plus"} />),
     }));
 
@@ -79,7 +81,6 @@ export default function BookSearch() {
                     className="w-full"
                     options={options}
                     onSelect={onSelect}
-                    // value={autoCompleteValue}
                     size="large"
                     autoFocus={true}
                 >
