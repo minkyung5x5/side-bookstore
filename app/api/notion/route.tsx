@@ -1,5 +1,6 @@
 'use server'
 
+
 const NOTION_API_URL = 'https://api.notion.com/v1';
 const NOTION_SECRET_TOKEN = process.env.NOTION_SECRET_TOKEN;
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID;
@@ -13,7 +14,6 @@ const HEADERS = {
 export async function POST(request: Request) {
     try {
         const req = await request.json();
-        console.log(req)
         const response = await fetch(`${NOTION_API_URL}/pages`, {
             method: 'POST',
             headers: HEADERS,
@@ -40,6 +40,47 @@ export async function POST(request: Request) {
                         }
                         : {}),
                 },
+                children: [
+                    {
+                        "object": "block",
+                        "type": "table",
+                        "table": {
+                            "table_width": 3,
+                            "children": req.bookList.map((book: { title: string; link: string; priceStandard: number }) => ({
+                                "type": "table_row",
+                                "table_row": {
+                                    "cells": [
+                                        [
+                                            {
+                                                "type": "text",
+                                                "text": {
+                                                    "content": book.title,
+                                                }
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "type": "text",
+                                                "text": {
+                                                    "content": '책구매링크',
+                                                    "link": { "url": book.link }
+                                                }
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "type": "text",
+                                                "text": {
+                                                    "content": String(book.priceStandard),
+                                                }
+                                            }
+                                        ],
+                                    ]
+                                }
+                            }))
+                        }
+                    }
+                ],
             }),
         });
 
