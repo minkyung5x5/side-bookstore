@@ -15,7 +15,6 @@ export default function BookSubmit() {
         if (storedReservation) {
             setReservation(JSON.parse(storedReservation));
         }
-        console.log(reservation)
     }, []);
 
     return (
@@ -44,10 +43,10 @@ export default function BookSubmit() {
                             <div className="font-bold">{'시간'}</div>
                             <div className="col-span-2">{reservation.time}</div>
                             {reservation.etc && (
-                                <div>
-                                    <div className="font-bold">{'하고싶은말'}</div>
-                                    <div className="col-span-2">{reservation.etc}</div>
-                                </div>
+                                <div className="font-bold">{'하고싶은말'}</div>
+                            )}
+                            {reservation.etc && (
+                                <div className="col-span-2">{reservation.etc}</div>
                             )}
                             <div className="font-bold">{'주문한 책'}</div>
                             <div className="col-span-3">

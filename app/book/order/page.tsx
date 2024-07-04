@@ -36,13 +36,13 @@ export default function BookOrder() {
     const { Option } = Select;
     const { TextArea } = Input;
     const [selectedBookList, setSelectedBookList] = useState<Book[]>([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const storedSelectedBookList = localStorage.getItem('selectedBookList');
         if (storedSelectedBookList) {
             setSelectedBookList(JSON.parse(storedSelectedBookList));
         }
-        console.log(storedSelectedBookList)
     }, []);
 
     const disabledDate: RangePickerProps['disabledDate'] = (current) => {
@@ -55,7 +55,6 @@ export default function BookOrder() {
     const handlePostToNotion = async (values: Reservation) => {
         try {
             const data = await postToNotion(values);
-            console.log('Data written to Notion:', data);
             localStorage.setItem('reservation', JSON.stringify(values));
         } catch (error) {
             console.error('Error writing to Notion:', error);
@@ -71,15 +70,18 @@ export default function BookOrder() {
     };
 
     const onFinish = async (values: Reservation) => {
+        setLoading(true);
         try {
             const formattedValues = formatValues(values);
-            console.log(formattedValues)
             await handlePostToNotion(formattedValues);
             router.push('/book/submit');
         } catch (error) {
             console.error('Error writing to Notion:', error);
+        } finally {
+            setLoading(false);
         }
     };
+    
 
     return (
         <main className="m-4">
@@ -137,7 +139,9 @@ export default function BookOrder() {
                     </Form.Item>
 
                     <Form.Item className='my-0 flex justify-end'>
-                        <Button type="primary" htmlType="submit" size="large" shape="round">{'예약하기'}</Button>
+                        <Button type="primary" htmlType="submit" size="large" shape="round" loading={loading} disabled={loading}>
+                            {loading ? '예약 진행 중' : '예약하기'}
+                        </Button>
                     </Form.Item>
                 </Form>
             </Card>

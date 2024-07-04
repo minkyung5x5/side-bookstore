@@ -18,16 +18,12 @@ export default function BookSearch() {
     const [autoCompleteValue, setAutoCompleteValue] = useState('');
 
     useEffect(() => {
-        console.log("Updated searchedBookList");
-        console.log(searchedBookList)
         const newOptions = formatOptions(searchedBookList)
         setOptions(newOptions);
 
     }, [searchedBookList]);
 
     useEffect(() => {
-        console.log("Updated selectedBookList");
-        console.log(selectedBookList)
         localStorage.setItem('selectedBookList', JSON.stringify(selectedBookList));
         const total = calculateTotalPrice(selectedBookList);
         setTotalPrice(total);
@@ -37,7 +33,6 @@ export default function BookSearch() {
         try {
             const data = await getFromAladin({ query });
             setSearchedBookList(data.item);
-            console.log('Data from aladin:', data);
         } catch (error) {
             console.error('Error aladin', error);
         }
@@ -45,18 +40,14 @@ export default function BookSearch() {
 
     const onChange: SearchProps['onChange'] = debounce((e) => {
         const value = e.target.value;
-        console.log("Input changed:", value);
         callApi(value);
     }, 300);
 
     const onSearch: SearchProps['onSearch'] = (value) => {
-        console.log('search', value);
         callApi(value);
     };
 
     const onSelect = (val: number, option: {key: number, value: string, label: React.ReactNode}) => {
-        console.log(typeof option.label)
-        console.log('onSelect', searchedBookList[option.key]);
         const newSelectedBook = searchedBookList[option.key]
         setSelectedBookList(selectedBookList => [...selectedBookList, newSelectedBook])
     };
